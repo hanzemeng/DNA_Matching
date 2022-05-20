@@ -5,4 +5,4 @@ clean:
 	rm -f *.o prog3 out.txt
 
 run:
-	./prog3 -m 2 -c -0.5 -d -1 -1 "test/input2a.txt" -2 "test/input2b.txt"
+	./prog3 -m 2 -c -0.5 -d -1 -1 "test/input9a.txt" -2 "test/input9b.txt"

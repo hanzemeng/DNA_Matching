@@ -15,37 +15,36 @@ void setup(int argc, char** argv);
 
 int main(int argc, char** argv)
 {
+    // read in m, c, d, s1, s2
     setup(argc, argv);
-
+    // find the best match score
     int n1 = s1.size();
     int n2 = s2.size();
     vector<vector<double>> dp(n1+1, vector<double>(n2+1, 0));
-
-    for(int i=0; i<=n1; i++)
+    for(int i=0; i<=n1; i++) // base case where s2 is empty and delete everything in s1
     {
         dp[i][0] = i*d;
     }
-    for(int i=0; i<=n2; i++)
+    for(int i=0; i<=n2; i++) // base case where s1 is empty and delete everything in s2
     {
         dp[0][i] = i*d;
     }
-
     for(int i=1; i<=n1; i++)
     {
         for(int j=1; j<=n2; j++)
         {
-            if(s1[i-1] == s2[j-1])
+            if(s1[i-1] == s2[j-1]) // match the same character
             {
                 dp[i][j] = dp[i-1][j-1]+m;
             }
             else
             {
-                double temp = max(dp[i-1][j]+d, dp[i][j-1]+d);
-                dp[i][j] = max(dp[i-1][j-1]+c, temp);
+                double temp = max(dp[i-1][j]+d, dp[i][j-1]+d); // delete s1 or delete s2
+                dp[i][j] = max(dp[i-1][j-1]+c, temp); // or replace
             }
         }
     }
-
+    // back trace to reconstruct the best match DNAs
     string res1 = "";
     string res2 = "";
     int i=n1;
@@ -79,7 +78,6 @@ int main(int argc, char** argv)
             j--;
         }
     }
-
     while(i>0)
     {
         res1 += s1[i-1];
@@ -92,16 +90,15 @@ int main(int argc, char** argv)
         res2 += s2[j-1];
         j--;
     }
-    
-    
     reverse(res1.begin(), res1.end());
     reverse(res2.begin(), res2.end());
-
+    // write to out file
     ofstream outFile;
     outFile.open("out.txt");
     outFile << dp[n1][n2] << endl;
     outFile << res1 << endl;
     outFile << res2 << endl;
+    outFile.close();
 /*
     for(int i=0; i<=n1; i++)
     {
